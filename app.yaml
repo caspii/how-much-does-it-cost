@@ -1,0 +1,23 @@
+name: how-much-does-it-cost
+region: nyc
+services:
+  - name: web
+    environment_slug: python
+    github:
+      branch: main
+      deploy_on_push: true
+      repo: YOUR_GITHUB_USERNAME/how-much-does-it-cost
+    build_command: pip install -r requirements.txt
+    run_command: gunicorn --bind :$PORT app:app
+    envs:
+      - key: OPENAI_API_KEY
+        scope: RUN_TIME
+        type: SECRET
+      - key: SECRET_KEY
+        scope: RUN_TIME
+        type: SECRET
+    http_port: 8080
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    routes:
+      - path: /

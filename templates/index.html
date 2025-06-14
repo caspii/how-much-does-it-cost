@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Much Does It Cost?</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>How Much Does It Cost?</h1>
+        <p class="subtitle">Take a picture to find out the estimated price</p>
+        
+        <div class="camera-section">
+            <button id="takePictureBtn" class="btn-primary">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                    <circle cx="12" cy="13" r="4"></circle>
+                </svg>
+                Take Picture
+            </button>
+            
+            <input type="file" id="fileInput" accept="image/*" capture="environment" style="display: none;">
+            
+            <div id="preview" class="preview-section" style="display: none;">
+                <img id="previewImage" alt="Preview">
+                <button id="analyzeBtn" class="btn-secondary">Analyze Price</button>
+                <button id="retakeBtn" class="btn-secondary">Retake</button>
+            </div>
+        </div>
+        
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p id="loadingMessage" class="loading-message">Analyzing image...</p>
+        </div>
+        
+        <div id="results" class="results-section" style="display: none;">
+            <h2>Price Estimate</h2>
+            <div id="resultContent"></div>
+            <button id="newPictureBtn" class="btn-primary">Take Another Picture</button>
+        </div>
+        
+        <div id="error" class="error-section" style="display: none;">
+            <p class="error-message"></p>
+            <button id="retryBtn" class="btn-secondary">Try Again</button>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
