@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <div class="container initial-view" id="mainContainer">
+    <div class="desktop-wrapper">
+        <div class="container initial-view" id="mainContainer">
         <div class="hero-section" id="heroSection">
             <div class="app-icon">💰</div>
             <h1>How Much Does It Cost?</h1>
@@ -63,6 +64,7 @@
         <div id="error" class="error-section" style="display: none;">
             <p class="error-message"></p>
             <button id="retryBtn" class="btn-secondary">Try Again</button>
+        </div>
         </div>
     </div>
     
