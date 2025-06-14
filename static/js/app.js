@@ -318,6 +318,16 @@ function displayResults(data) {
         
         html += `</div>`;
         
+        // Add description if available
+        if (data.description) {
+            html += `<div class="item-description">${data.description}</div>`;
+        }
+        
+        // Add category if available
+        if (data.category) {
+            html += `<div class="item-category">Category: ${data.category}</div>`;
+        }
+        
         if (data.factors && data.factors.length > 0) {
             html += `
                 <div class="factors">
@@ -332,10 +342,80 @@ function displayResults(data) {
         if (data.where_to_buy && data.where_to_buy.length > 0) {
             html += `
                 <div class="where-to-buy">
-                    <h3>Where to Buy</h3>
+                    <h3>Where to Buy Locally</h3>
                     <ul>
                         ${data.where_to_buy.map(place => `<li>${place}</li>`).join('')}
                     </ul>
+                </div>
+            `;
+        }
+        
+        // Add online retailers
+        if (data.online_retailers && data.online_retailers.length > 0) {
+            html += `
+                <div class="online-retailers">
+                    <h3>Online Options</h3>
+                    <ul>
+                        ${data.online_retailers.map(retailer => `<li>${retailer}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+        
+        // Add condition notes if available
+        if (data.condition_notes) {
+            html += `
+                <div class="condition-notes">
+                    <h3>Condition Notes</h3>
+                    <p>${data.condition_notes}</p>
+                </div>
+            `;
+        }
+        
+        // Add alternatives
+        if (data.alternatives && data.alternatives.length > 0) {
+            html += `
+                <div class="alternatives">
+                    <h3>Similar Alternatives</h3>
+                    <ul>
+                        ${data.alternatives.map(alt => `<li>${alt}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+        
+        // Add buying tips
+        if (data.buying_tips && data.buying_tips.length > 0) {
+            html += `
+                <div class="buying-tips">
+                    <h3>Buying Tips</h3>
+                    <ul>
+                        ${data.buying_tips.map(tip => `<li>${tip}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+        
+        // Add search links
+        if (data.search_keywords && data.search_keywords.length > 0) {
+            const searchQuery = data.search_keywords.join(' ');
+            html += `
+                <div class="search-links">
+                    <h3>Search Online</h3>
+                    <div class="link-buttons">
+                        <a href="https://www.google.com/search?q=${encodeURIComponent(searchQuery)}" target="_blank" class="search-link">
+                            Google Search
+                        </a>
+                        <a href="https://www.google.com/search?q=${encodeURIComponent(searchQuery)}&tbm=shop" target="_blank" class="search-link">
+                            Google Shopping
+                        </a>
+                        <a href="https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(searchQuery)}" target="_blank" class="search-link">
+                            eBay
+                        </a>
+                        <a href="https://www.amazon.com/s?k=${encodeURIComponent(searchQuery)}" target="_blank" class="search-link">
+                            Amazon
+                        </a>
+                    </div>
                 </div>
             `;
         }

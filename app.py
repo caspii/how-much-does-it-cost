@@ -109,13 +109,18 @@ def analyze_image():
         1. What the item is, including brand and model if identifiable
         2. Estimated price range in {local_currency} based on local market prices
         3. Factors affecting the price
-        4. Where this item might typically be purchased locally
+        4. Where this item might typically be purchased
+        5. Additional helpful information about the item
+        
+        Be cautious and only include information you're confident about. If unsure about specific details, indicate uncertainty.
         
         Format your response as JSON with the following structure:
         {{
             "item_name": "Item name",
-            "brand": "Brand name if identifiable",
-            "model": "Model name/number if identifiable",
+            "brand": "Brand name if identifiable, or null if uncertain",
+            "model": "Model name/number if identifiable, or null if uncertain",
+            "category": "General category (e.g., Electronics, Fashion, Home & Garden)",
+            "description": "Brief description of the item and its key features",
             "price_range": {{
                 "low": 0.00,
                 "high": 0.00,
@@ -123,9 +128,14 @@ def analyze_image():
             }},
             "currency": "{local_currency}",
             "location": "{country_context.strip()}",
-            "factors": ["factor1", "factor2"],
-            "where_to_buy": ["location1", "location2"],
-            "confidence": "high/medium/low"
+            "factors": ["factor1", "factor2", "factor3"],
+            "where_to_buy": ["location1", "location2", "location3"],
+            "online_retailers": ["retailer1", "retailer2"],
+            "condition_notes": "Notes about condition if used/vintage, or null",
+            "alternatives": ["similar item 1", "similar item 2"],
+            "buying_tips": ["tip1", "tip2"],
+            "confidence": "high/medium/low",
+            "search_keywords": ["keyword1", "keyword2", "keyword3"]
         }}"""
         
         # Initialize OpenAI client

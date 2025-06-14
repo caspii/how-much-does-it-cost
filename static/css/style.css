@@ -258,7 +258,27 @@ h1 {
     font-style: italic;
 }
 
-.factors, .where-to-buy {
+.item-description {
+    font-size: 16px;
+    color: #34495e;
+    line-height: 1.6;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin: 15px 0;
+}
+
+.item-category {
+    display: inline-block;
+    padding: 6px 16px;
+    background: #e8f4f8;
+    color: #2980b9;
+    border-radius: 20px;
+    font-size: 14px;
+    margin: 10px 0;
+}
+
+.factors, .where-to-buy, .online-retailers, .alternatives, .buying-tips, .condition-notes {
     margin: 20px 0;
     background: white;
     border-radius: 8px;
@@ -266,7 +286,7 @@ h1 {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
-.factors h3, .where-to-buy h3 {
+.factors h3, .where-to-buy h3, .online-retailers h3, .alternatives h3, .buying-tips h3, .condition-notes h3, .search-links h3 {
     font-size: 18px;
     color: #2c3e50;
     margin-bottom: 12px;
@@ -286,12 +306,37 @@ h1 {
     font-size: 20px;
 }
 
-.factors ul, .where-to-buy ul {
+.online-retailers h3:before {
+    content: "🌐";
+    font-size: 20px;
+}
+
+.alternatives h3:before {
+    content: "🔄";
+    font-size: 20px;
+}
+
+.buying-tips h3:before {
+    content: "💡";
+    font-size: 20px;
+}
+
+.condition-notes h3:before {
+    content: "📋";
+    font-size: 20px;
+}
+
+.search-links h3:before {
+    content: "🔍";
+    font-size: 20px;
+}
+
+.factors ul, .where-to-buy ul, .online-retailers ul, .alternatives ul, .buying-tips ul {
     list-style: none;
     padding-left: 0;
 }
 
-.factors li, .where-to-buy li {
+.factors li, .where-to-buy li, .online-retailers li, .alternatives li, .buying-tips li {
     padding: 8px 0;
     padding-left: 25px;
     position: relative;
@@ -299,12 +344,54 @@ h1 {
     line-height: 1.5;
 }
 
-.factors li:before, .where-to-buy li:before {
+.factors li:before, .where-to-buy li:before, .online-retailers li:before, .alternatives li:before, .buying-tips li:before {
     content: "✓";
     position: absolute;
     left: 0;
     color: #3498db;
     font-weight: bold;
+}
+
+.condition-notes p {
+    color: #34495e;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.search-links {
+    margin: 20px 0;
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.link-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.search-link {
+    display: inline-block;
+    padding: 10px 15px;
+    background: white;
+    color: #3498db;
+    text-decoration: none;
+    border-radius: 8px;
+    text-align: center;
+    border: 2px solid #e1e8ed;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.search-link:hover {
+    background: #3498db;
+    color: white;
+    border-color: #3498db;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
 }
 
 .confidence {
