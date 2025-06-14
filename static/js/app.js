@@ -15,6 +15,8 @@ const newPictureBtn = document.getElementById('newPictureBtn');
 const error = document.getElementById('error');
 const errorMessage = document.querySelector('.error-message');
 const retryBtn = document.getElementById('retryBtn');
+const mainContainer = document.getElementById('mainContainer');
+const heroSection = document.getElementById('heroSection');
 
 // Get user's location
 navigator.geolocation.getCurrentPosition(
@@ -88,6 +90,9 @@ retryBtn.addEventListener('click', resetToCapture);
 
 // Functions
 function showPreview() {
+    mainContainer.classList.remove('initial-view');
+    mainContainer.classList.add('results-view');
+    heroSection.style.display = 'none';
     takePictureBtn.style.display = 'none';
     preview.style.display = 'block';
     results.style.display = 'none';
@@ -95,6 +100,9 @@ function showPreview() {
 }
 
 function resetToCapture() {
+    mainContainer.classList.add('initial-view');
+    mainContainer.classList.remove('results-view');
+    heroSection.style.display = 'block';
     takePictureBtn.style.display = 'inline-flex';
     preview.style.display = 'none';
     results.style.display = 'none';
