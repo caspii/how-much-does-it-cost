@@ -55,8 +55,51 @@ def analyze_image():
         
         # Prepare location context
         location_context = ""
+        local_currency = "USD"
+        country_context = ""
+        
         if latitude and longitude:
-            location_context = f"The photo was taken at coordinates: {latitude}, {longitude}. Consider regional pricing variations based on this location."
+            # Reverse geocode to get country/region
+            try:
+                import requests
+                # Using a free reverse geocoding service
+                geo_response = requests.get(
+                    f"https://geocode.maps.co/reverse?lat={latitude}&lon={longitude}",
+                    headers={"User-Agent": "HowMuchDoesItCost/1.0"}
+                )
+                if geo_response.status_code == 200:
+                    geo_data = geo_response.json()
+                    country = geo_data.get('address', {}).get('country', '')
+                    city = geo_data.get('address', {}).get('city', '')
+                    
+                    # Map countries to currencies
+                    currency_map = {
+                        'United States': 'USD',
+                        'Canada': 'CAD',
+                        'United Kingdom': 'GBP',
+                        'Germany': 'EUR',
+                        'France': 'EUR',
+                        'Italy': 'EUR',
+                        'Spain': 'EUR',
+                        'Japan': 'JPY',
+                        'China': 'CNY',
+                        'India': 'INR',
+                        'Australia': 'AUD',
+                        'Brazil': 'BRL',
+                        'Mexico': 'MXN',
+                        'South Korea': 'KRW',
+                        'Switzerland': 'CHF',
+                        'Sweden': 'SEK',
+                        'Norway': 'NOK',
+                        'Denmark': 'DKK'
+                    }
+                    
+                    local_currency = currency_map.get(country, 'USD')
+                    country_context = f"Location: {city}, {country}. " if city and country else f"Location: {country}. " if country else ""
+                    location_context = f"The user is located in {country_context}Please provide prices in {local_currency} considering local market conditions and pricing."
+            except Exception as e:
+                app.logger.warning(f"Geocoding failed: {e}")
+                location_context = f"The photo was taken at coordinates: {latitude}, {longitude}. Consider regional pricing variations based on this location."
         
         # Create the prompt
         prompt = f"""Analyze this image and provide an estimated price range for the item(s) shown. 
@@ -64,9 +107,9 @@ def analyze_image():
         
         Please provide:
         1. What the item is, including brand and model if identifiable
-        2. Estimated price range (in USD)
+        2. Estimated price range in {local_currency} based on local market prices
         3. Factors affecting the price
-        4. Where this item might typically be purchased
+        4. Where this item might typically be purchased locally
         
         Format your response as JSON with the following structure:
         {{
@@ -78,7 +121,8 @@ def analyze_image():
                 "high": 0.00,
                 "typical": 0.00
             }},
-            "currency": "USD",
+            "currency": "{local_currency}",
+            "location": "{country_context.strip()}",
             "factors": ["factor1", "factor2"],
             "where_to_buy": ["location1", "location2"],
             "confidence": "high/medium/low"

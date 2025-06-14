@@ -263,8 +263,28 @@ function displayResults(data) {
         }
         
         if (data.price_range) {
+            // Determine locale based on currency
+            const localeMap = {
+                'USD': 'en-US',
+                'EUR': 'de-DE',
+                'GBP': 'en-GB',
+                'JPY': 'ja-JP',
+                'CNY': 'zh-CN',
+                'INR': 'en-IN',
+                'CAD': 'en-CA',
+                'AUD': 'en-AU',
+                'BRL': 'pt-BR',
+                'MXN': 'es-MX',
+                'KRW': 'ko-KR',
+                'CHF': 'de-CH',
+                'SEK': 'sv-SE',
+                'NOK': 'nb-NO',
+                'DKK': 'da-DK'
+            };
+            
+            const locale = localeMap[data.currency] || 'en-US';
             const formatPrice = (price) => {
-                return new Intl.NumberFormat('en-US', {
+                return new Intl.NumberFormat(locale, {
                     style: 'currency',
                     currency: data.currency || 'USD',
                     minimumFractionDigits: 0,
@@ -278,6 +298,10 @@ function displayResults(data) {
                 </div>
                 <div class="typical-price">Typical price: <strong>${formatPrice(data.price_range.typical)}</strong></div>
             `;
+        }
+        
+        if (data.location) {
+            html += `<div class="location-info">Prices for: ${data.location}</div>`;
         }
         
         if (data.confidence) {

@@ -229,6 +229,14 @@ h1 {
     color: #5a6c7d;
 }
 
+.location-info {
+    text-align: center;
+    font-size: 14px;
+    color: #7f8c8d;
+    margin: 10px 0;
+    font-style: italic;
+}
+
 .factors, .where-to-buy {
     margin: 20px 0;
     background: white;
