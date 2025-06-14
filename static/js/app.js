@@ -253,6 +253,15 @@ function displayResults(data) {
                 <div class="item-name">${data.item_name || 'Unknown Item'}</div>
         `;
         
+        // Add brand and model if available
+        if (data.brand || data.model) {
+            html += '<div class="item-details">';
+            if (data.brand) html += `<span class="brand">Brand: ${data.brand}</span>`;
+            if (data.brand && data.model) html += ' • ';
+            if (data.model) html += `<span class="model">Model: ${data.model}</span>`;
+            html += '</div>';
+        }
+        
         if (data.price_range) {
             const formatPrice = (price) => {
                 return new Intl.NumberFormat('en-US', {

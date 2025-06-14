@@ -63,7 +63,7 @@ def analyze_image():
         {location_context}
         
         Please provide:
-        1. What the item is
+        1. What the item is, including brand and model if identifiable
         2. Estimated price range (in USD)
         3. Factors affecting the price
         4. Where this item might typically be purchased
@@ -71,6 +71,8 @@ def analyze_image():
         Format your response as JSON with the following structure:
         {{
             "item_name": "Item name",
+            "brand": "Brand name if identifiable",
+            "model": "Model name/number if identifiable",
             "price_range": {{
                 "low": 0.00,
                 "high": 0.00,
