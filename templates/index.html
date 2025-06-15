@@ -6,13 +6,21 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>How Much Does It Cost?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <div class="desktop-wrapper">
         <div class="container initial-view" id="mainContainer">
         <div class="hero-section" id="heroSection">
-            <div class="app-icon">💰</div>
+            <div class="app-icon">
+                <span class="icon-main">💸</span>
+                <span class="icon-float icon-float-1">💵</span>
+                <span class="icon-float icon-float-2">💴</span>
+                <span class="icon-float icon-float-3">💶</span>
+            </div>
             <h1>How Much Does It Cost?</h1>
             <p class="subtitle">Instant price estimates from photos</p>
         </div>
