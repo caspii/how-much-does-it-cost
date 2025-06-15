@@ -27,7 +27,9 @@ OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    # Check if running locally based on debug mode or environment
+    is_local = app.debug or os.environ.get('FLASK_ENV') == 'development' or request.host.startswith('localhost') or request.host.startswith('127.0.0.1')
+    return render_template('index.html', is_local=is_local)
 
 @app.route('/analyze', methods=['POST'])
 def analyze_image():
