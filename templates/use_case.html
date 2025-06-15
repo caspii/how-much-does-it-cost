@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} - CostCam{% endblock %}
+{% block og_title %}{{ title }} - CostCam{% endblock %}
+{% block twitter_title %}{{ title }} - CostCam{% endblock %}
+{% block meta_description %}{{ description }}{% endblock %}
+{% block og_description %}{{ description }}{% endblock %}
+{% block twitter_description %}{{ description }}{% endblock %}
+
+{% block content %}
+<div class="use-case-container">
+    <article class="use-case-content">
+        {{ content|safe }}
+    </article>
+    
+    <div class="cta-section">
+        <h2>Ready to Try CostCam?</h2>
+        <p>Start getting instant price estimates with just a photo.</p>
+        <a href="/" class="btn-primary">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                <circle cx="12" cy="13" r="4"></circle>
+            </svg>
+            Start Now
+        </a>
+    </div>
+</div>
+{% endblock %}

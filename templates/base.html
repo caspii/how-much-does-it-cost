@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CostCam - Instant Price Estimates from Photos{% endblock %}</title>
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://costcam.app{{ request.path }}">
+    <meta property="og:title" content="{% block og_title %}CostCam - Instant Price Estimates from Photos{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Take a photo of any item and get instant price estimates powered by AI. Find out how much things cost with just a snap.{% endblock %}">
+    <meta property="og:image" content="https://costcam.app/static/images/og-image.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://costcam.app{{ request.path }}">
+    <meta property="twitter:title" content="{% block twitter_title %}CostCam - Instant Price Estimates from Photos{% endblock %}">
+    <meta property="twitter:description" content="{% block twitter_description %}Take a photo of any item and get instant price estimates powered by AI. Find out how much things cost with just a snap.{% endblock %}">
+    <meta property="twitter:image" content="https://costcam.app/static/images/og-image.jpg">
+    
+    <!-- Additional Meta Tags -->
+    <meta name="description" content="{% block meta_description %}Take a photo of any item and get instant price estimates powered by AI. Find out how much things cost with just a snap.{% endblock %}">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_css %}{% endblock %}
+    
+    {% if not is_local %}
+    <!-- Fathom - beautiful, simple website analytics -->
+    <script src="https://cdn.usefathom.com/script.js" data-site="OOZDGRYH" defer></script>
+    <!-- / Fathom -->
+    {% endif %}
+</head>
+<body class="with-navbar">
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">CostCam</a>
+            <div class="nav-links">
+                <a href="/#use-cases" class="nav-link">Use Cases</a>
+                <a href="/" class="nav-link nav-cta">Try Now</a>
+            </div>
+        </div>
+    </nav>
+    
+    {% block content %}{% endblock %}
+    
+    <footer class="footer">
+        <div class="footer-container">
+            <p>&copy; 2025 CostCam. Powered by AI.</p>
+        </div>
+    </footer>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

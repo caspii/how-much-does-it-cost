@@ -6,6 +6,8 @@ import json
 from werkzeug.utils import secure_filename
 import tempfile
 from dotenv import load_dotenv
+import markdown
+from pathlib import Path
 
 # Load environment variables
 load_dotenv()
@@ -278,6 +280,63 @@ def test():
         data = request.get_json()
         return jsonify({'received': True, 'data_size': len(str(data)) if data else 0})
     return jsonify({'status': 'test endpoint working'})
+
+# Use case routes
+@app.route('/use-cases/<slug>')
+def use_case(slug):
+    # Map slugs to files and metadata
+    use_cases = {
+        'garage-sales': {
+            'file': 'garage-sales.md',
+            'title': 'Smart Shopping at Garage Sales & Thrift Stores',
+            'description': 'Never overpay at a garage sale again. CostCam helps you make informed decisions when hunting for treasures.'
+        },
+        'insurance-claims': {
+            'file': 'insurance-claims.md',
+            'title': 'Document Your Valuables for Insurance',
+            'description': 'Protect your assets with accurate valuations. CostCam makes it easy to document your belongings.'
+        },
+        'moving-selling': {
+            'file': 'moving-selling.md',
+            'title': 'Simplify Moving & Decluttering',
+            'description': 'Moving or downsizing? CostCam helps you decide what to keep, sell, or donate.'
+        },
+        'gift-shopping': {
+            'file': 'gift-shopping.md',
+            'title': 'Smart Gift Shopping & Budget Management',
+            'description': 'Never exceed your gift budget again. CostCam helps you find perfect presents within your price range.'
+        },
+        'collectors-antiques': {
+            'file': 'collectors-antiques.md',
+            'title': 'Discover Hidden Treasures: Collectibles & Antiques',
+            'description': 'Uncover the true value of vintage finds, antiques, and collectibles.'
+        }
+    }
+    
+    if slug not in use_cases:
+        return render_template('404.html'), 404
+    
+    use_case_info = use_cases[slug]
+    
+    # Read markdown file
+    content_path = Path('content/use-cases') / use_case_info['file']
+    try:
+        with open(content_path, 'r') as f:
+            markdown_content = f.read()
+        
+        # Convert markdown to HTML
+        html_content = markdown.markdown(markdown_content, extensions=['extra', 'codehilite'])
+        
+        # Check if running locally
+        is_local = app.debug or os.environ.get('FLASK_ENV') == 'development' or request.host.startswith('localhost') or request.host.startswith('127.0.0.1')
+        
+        return render_template('use_case.html', 
+                             content=html_content,
+                             title=use_case_info['title'],
+                             description=use_case_info['description'],
+                             is_local=is_local)
+    except FileNotFoundError:
+        return render_template('404.html'), 404
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8080))

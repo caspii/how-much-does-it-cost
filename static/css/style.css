@@ -12,6 +12,13 @@ body {
     min-height: 100vh;
     margin: 0;
     overflow-x: hidden;
+    padding-bottom: 80px; /* Space for fixed button on mobile */
+}
+
+@media (min-width: 768px) {
+    body {
+        padding-bottom: 0; /* No padding needed on larger screens */
+    }
 }
 
 @media (min-width: 1024px) {
@@ -281,6 +288,28 @@ h1 {
     min-height: 200px;
     margin-top: 40px;
     z-index: 2;
+    padding-bottom: 100px; /* Space for fixed button */
+}
+
+/* Fixed button container */
+.camera-section .btn-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(17, 17, 17, 0.95);
+    border-top: 1px solid #222;
+    padding: 20px;
+    text-align: center;
+    z-index: 10;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.camera-section .btn-container .btn-primary {
+    margin: 0;
+    width: 100%;
+    max-width: 300px;
 }
 
 @media (min-width: 768px) {
@@ -288,6 +317,14 @@ h1 {
         padding: 60px 40px;
         min-height: 250px;
         margin-top: 60px;
+        padding-bottom: 40px; /* Normal padding on larger screens */
+    }
+    
+    .camera-section .btn-container {
+        position: static;
+        background: transparent;
+        border-top: none;
+        padding: 20px 0 0 0;
     }
 }
 
@@ -919,6 +956,7 @@ h1 {
     .camera-section {
         padding: 30px 20px;
         border-radius: 25px 25px 0 0;
+        padding-bottom: 100px; /* Space for fixed button */
     }
     
     .btn-primary, .btn-secondary {
@@ -983,4 +1021,338 @@ h1 {
         width: calc(100% - 30px);
         max-width: 300px;
     }
+}
+
+/* Navigation Bar */
+.navbar {
+    background: #0a0a0a;
+    border-bottom: 1px solid #222;
+    padding: 15px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #00ff88;
+    text-decoration: none;
+    letter-spacing: -0.5px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.nav-link {
+    color: #999;
+    text-decoration: none;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #00ff88;
+}
+
+.nav-cta {
+    border: 1px solid #00ff88;
+    padding: 8px 20px;
+    border-radius: 0;
+    color: #00ff88;
+}
+
+.nav-cta:hover {
+    background: #00ff88;
+    color: #0a0a0a;
+}
+
+/* Use Cases Section */
+.use-cases-section {
+    background: #0a0a0a;
+    padding: 80px 20px;
+    margin-top: 60px;
+    border-top: 1px solid #222;
+}
+
+.use-cases-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.use-cases-section h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.5rem;
+    color: #e0e0e0;
+    text-align: center;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.use-cases-subtitle {
+    text-align: center;
+    color: #666;
+    font-size: 1.1rem;
+    margin-bottom: 50px;
+}
+
+.use-cases-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.use-case-card {
+    background: #111;
+    border: 1px solid #222;
+    padding: 30px;
+    text-decoration: none;
+    color: #e0e0e0;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.use-case-card:hover {
+    border-color: #00ff88;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 255, 136, 0.1);
+}
+
+.use-case-icon {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 20px;
+    filter: grayscale(1) brightness(0.8);
+    transition: all 0.3s ease;
+}
+
+.use-case-card:hover .use-case-icon {
+    filter: grayscale(0) brightness(1.2);
+}
+
+.use-case-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    color: #e0e0e0;
+}
+
+.use-case-card p {
+    color: #999;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.use-case-arrow {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    font-size: 24px;
+    color: #666;
+    transition: all 0.3s ease;
+}
+
+.use-case-card:hover .use-case-arrow {
+    color: #00ff88;
+    transform: translateX(5px);
+}
+
+/* Use Case Page Styles */
+body.with-navbar {
+    padding-top: 60px; /* Space for fixed navbar */
+}
+
+.use-case-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.use-case-content {
+    background: #111;
+    border: 1px solid #222;
+    padding: 40px;
+    margin-bottom: 40px;
+}
+
+.use-case-content h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.5rem;
+    color: #00ff88;
+    margin-bottom: 30px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.use-case-content h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.8rem;
+    color: #e0e0e0;
+    margin: 40px 0 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.use-case-content h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.3rem;
+    color: #e0e0e0;
+    margin: 30px 0 15px;
+}
+
+.use-case-content p {
+    color: #999;
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+.use-case-content ul, .use-case-content ol {
+    color: #999;
+    margin-bottom: 20px;
+    padding-left: 30px;
+}
+
+.use-case-content li {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.use-case-content strong {
+    color: #e0e0e0;
+}
+
+.use-case-content em {
+    color: #00ff88;
+    font-style: italic;
+}
+
+.use-case-content blockquote {
+    border-left: 3px solid #00ff88;
+    padding-left: 20px;
+    margin: 20px 0;
+    font-style: italic;
+    color: #999;
+}
+
+/* CTA Section */
+.cta-section {
+    background: #111;
+    border: 1px solid #00ff88;
+    padding: 40px;
+    text-align: center;
+}
+
+.cta-section h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    color: #e0e0e0;
+    margin-bottom: 10px;
+}
+
+.cta-section p {
+    color: #999;
+    margin-bottom: 30px;
+}
+
+/* Footer */
+.footer {
+    background: #0a0a0a;
+    border-top: 1px solid #222;
+    padding: 30px 20px;
+    margin-top: 80px;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.footer p {
+    color: #666;
+    font-size: 14px;
+}
+
+/* 404 Page */
+.error-page {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.error-page h1 {
+    font-size: 120px;
+    color: #00ff88;
+    margin-bottom: 20px;
+    font-weight: 800;
+    letter-spacing: -5px;
+}
+
+.error-page h2 {
+    font-size: 2rem;
+    color: #e0e0e0;
+    margin-bottom: 10px;
+}
+
+.error-page p {
+    color: #999;
+    margin-bottom: 30px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 10px 0;
+    }
+    
+    .nav-logo {
+        font-size: 20px;
+    }
+    
+    .nav-links {
+        gap: 20px;
+    }
+    
+    .use-cases-section h2 {
+        font-size: 2rem;
+    }
+    
+    .use-case-content {
+        padding: 20px;
+    }
+    
+    .use-case-content h1 {
+        font-size: 2rem;
+    }
+    
+    .error-page h1 {
+        font-size: 80px;
+    }
+}
+
+/* Fix body padding for pages with navbar */
+.use-case-container ~ .footer {
+    margin-top: 0;
 }

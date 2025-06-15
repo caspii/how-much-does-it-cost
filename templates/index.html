@@ -64,13 +64,15 @@
                 </div>
             </div>
             
-            <button id="takePictureBtn" class="btn-primary">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-                    <circle cx="12" cy="13" r="4"></circle>
-                </svg>
-                Take Picture
-            </button>
+            <div class="btn-container">
+                <button id="takePictureBtn" class="btn-primary">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                        <circle cx="12" cy="13" r="4"></circle>
+                    </svg>
+                    Take Picture
+                </button>
+            </div>
             
             <input type="file" id="fileInput" accept="image/*" capture="environment" style="display: none;">
             
@@ -98,6 +100,50 @@
         </div>
         </div>
     </div>
+    
+    <section id="use-cases" class="use-cases-section">
+        <div class="use-cases-container">
+            <h2>How People Use CostCam</h2>
+            <p class="use-cases-subtitle">Discover smart ways to save money and make informed decisions</p>
+            
+            <div class="use-cases-grid">
+                <a href="/use-cases/garage-sales" class="use-case-card">
+                    <span class="use-case-icon">🏷️</span>
+                    <h3>Garage Sales & Thrift Stores</h3>
+                    <p>Find hidden treasures and avoid overpaying at yard sales</p>
+                    <span class="use-case-arrow">→</span>
+                </a>
+                
+                <a href="/use-cases/insurance-claims" class="use-case-card">
+                    <span class="use-case-icon">📋</span>
+                    <h3>Insurance Documentation</h3>
+                    <p>Document valuables for claims and home inventories</p>
+                    <span class="use-case-arrow">→</span>
+                </a>
+                
+                <a href="/use-cases/moving-selling" class="use-case-card">
+                    <span class="use-case-icon">📦</span>
+                    <h3>Moving & Decluttering</h3>
+                    <p>Decide what to sell, donate, or keep when relocating</p>
+                    <span class="use-case-arrow">→</span>
+                </a>
+                
+                <a href="/use-cases/gift-shopping" class="use-case-card">
+                    <span class="use-case-icon">🎁</span>
+                    <h3>Gift Shopping</h3>
+                    <p>Stay within budget while finding perfect presents</p>
+                    <span class="use-case-arrow">→</span>
+                </a>
+                
+                <a href="/use-cases/collectors-antiques" class="use-case-card">
+                    <span class="use-case-icon">🏺</span>
+                    <h3>Collectibles & Antiques</h3>
+                    <p>Identify valuable vintage items and avoid fakes</p>
+                    <span class="use-case-arrow">→</span>
+                </a>
+            </div>
+        </div>
+    </section>
     
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
