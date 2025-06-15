@@ -231,6 +231,14 @@ async function analyzeImage() {
         const result = await response.json();
         
         if (response.ok && result.success) {
+            // Track successful analysis
+            if (window.fathom) {
+                window.fathom.trackEvent('photo_analyzed', {
+                    item: result.data.item_name || 'unknown',
+                    category: result.data.category || 'unknown',
+                    confidence: result.data.confidence || 'unknown'
+                });
+            }
             displayResults(result.data);
         } else {
             showError(result.error || 'Failed to analyze image');
@@ -427,4 +435,11 @@ function displayResults(data) {
 function showError(message) {
     error.style.display = 'block';
     errorMessage.textContent = message;
+    
+    // Track error event
+    if (window.fathom) {
+        window.fathom.trackEvent('analysis_error', {
+            error_message: message.substring(0, 100) // Limit message length
+        });
+    }
 }
