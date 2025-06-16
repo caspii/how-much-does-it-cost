@@ -17,6 +17,7 @@ const errorMessage = document.querySelector('.error-message');
 const retryBtn = document.getElementById('retryBtn');
 const mainContainer = document.getElementById('mainContainer');
 const heroSection = document.getElementById('heroSection');
+const cameraSection = document.querySelector('.camera-section');
 
 // Get user's location
 navigator.geolocation.getCurrentPosition(
@@ -107,6 +108,7 @@ function resetToCapture() {
     preview.style.display = 'none';
     results.style.display = 'none';
     error.style.display = 'none';
+    if (cameraSection) cameraSection.style.display = 'block';
     loading.style.display = 'none';
     fileInput.value = '';
     currentImageData = null;
@@ -254,6 +256,7 @@ async function analyzeImage() {
 
 function displayResults(data) {
     results.style.display = 'block';
+    if (cameraSection) cameraSection.style.display = 'none';
     
     if (data.raw_response) {
         // Handle raw text response
