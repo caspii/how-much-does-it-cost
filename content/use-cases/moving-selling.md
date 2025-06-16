@@ -1,63 +1,55 @@
 # Simplify Moving & Decluttering
 
-Moving or downsizing? CostCam helps you decide what to keep, sell, or donate by instantly revealing the value of your belongings.
+CostCam helps decide what to keep, sell, or donate when moving.
 
-## The Moving Dilemma
+## Challenge
+- Overwhelming item decisions
+- Unknown item values
+- Limited time
+- Moving cost considerations
 
-Whether you're relocating, downsizing, or simply decluttering, you face countless decisions about your possessions. Should you pay to move that old couch? Is it worth selling those kitchen appliances? What's the best way to price items for a yard sale?
+## How CostCam Helps
+- Quick item valuation
+- Sell vs donate guidance
+- Yard sale pricing
+- Moving cost analysis
+- Tax deduction values
 
-## CostCam Makes Decisions Easy
+## Success Story: Cross-Country Move
 
-Transform overwhelming decluttering into smart decision-making:
+The Chen family's 3-bedroom home:
+- Found: $3,000+ in sellable items
+- Saved: $800 in moving costs
+- Maximized: Tax deductions
+- Completed: 2 weeks faster
 
-- **Quick Sorting**: Instantly know what's worth selling vs. donating
-- **Pricing Guidance**: Set competitive prices for online listings or yard sales
-- **Moving Calculations**: Decide if items are worth the moving cost
-- **Donation Values**: Get estimates for tax deduction documentation
-- **Time Management**: Focus selling efforts on high-value items
-
-## Success Story: The Cross-Country Move
-
-When the Chen family prepared for a cross-country move, they used CostCam to evaluate everything in their 3-bedroom home:
-
-- **Identified $3,000+ in sellable items** they almost donated
-- **Saved $800 in moving costs** by selling heavy, low-value furniture
-- **Maximized tax deductions** with accurate donation values
-- **Completed their move 2 weeks faster** with organized selling
-
-## Strategic Decluttering Process
+## 3-Week Process
 
 ### Week 1: Discovery
-- Photograph everything you're considering selling
-- Sort items into sell, donate, and keep categories
-- Focus on high-value items first
+- Photograph all items
+- Sort: sell/donate/keep
+- Prioritize high-value items
 
 ### Week 2: Selling
-- List items online with CostCam's suggested prices
-- Bundle low-value items for quick sales
-- Schedule donation pickups for unsold items
+- List with suggested prices
+- Bundle low-value items
+- Schedule donations
 
 ### Week 3: Final Push
-- Reduce prices on remaining items
-- Host a well-priced yard sale
-- Document donations for taxes
+- Reduce remaining prices
+- Host yard sale
+- Document donations
 
-## Money-Saving Tips
-
-1. **The $50 Rule**: Sell anything CostCam values over $50
-2. **Bundle Similar Items**: Group low-value items for easier sales
-3. **Seasonal Timing**: List seasonal items when demand is high
-4. **Platform Selection**: Use CostCam values to choose selling platforms
-5. **Donation Strategy**: Keep records of all donated item values
+## Decision Rules
+1. Sell items over $50
+2. Bundle similar items
+3. Time seasonal sales
+4. Choose right platforms
+5. Track donation values
 
 ## Perfect For
-
-- **Families relocating** for work or lifestyle changes
-- **Empty nesters** downsizing their homes
-- **Estate executors** managing inherited property
-- **Minimalists** embracing simpler living
-- **Anyone** facing a major life transition
-
-## Turn Clutter into Cash
-
-Don't leave money on the table during your next move or decluttering project. Let CostCam help you maximize value from items you no longer need while simplifying the entire process.
+- Relocating families
+- Empty nesters
+- Estate executors
+- Minimalists
+- Life transitions
