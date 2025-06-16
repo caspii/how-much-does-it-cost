@@ -286,27 +286,20 @@ h1 {
     box-shadow: none;
     position: relative;
     min-height: 200px;
-    margin-top: 40px;
+    margin-top: 0;
     z-index: 2;
-    padding-bottom: 100px; /* Space for fixed button */
 }
 
-/* Fixed button container */
-.camera-section .btn-container {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(17, 17, 17, 0.95);
-    border-top: 1px solid #222;
-    padding: 20px;
+/* Button container on homepage */
+.btn-container {
     text-align: center;
-    z-index: 10;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    padding: 20px;
+    margin: 20px 0;
+    z-index: 2;
+    position: relative;
 }
 
-.camera-section .btn-container .btn-primary {
+.btn-container .btn-primary {
     margin: 0;
     width: 100%;
     max-width: 300px;
@@ -316,15 +309,8 @@ h1 {
     .camera-section {
         padding: 60px 40px;
         min-height: 250px;
-        margin-top: 60px;
+        margin-top: 20px;
         padding-bottom: 40px; /* Normal padding on larger screens */
-    }
-    
-    .camera-section .btn-container {
-        position: static;
-        background: transparent;
-        border-top: none;
-        padding: 20px 0 0 0;
     }
 }
 
@@ -959,7 +945,6 @@ h1 {
     .camera-section {
         padding: 30px 20px;
         border-radius: 25px 25px 0 0;
-        padding-bottom: 100px; /* Space for fixed button */
     }
     
     .btn-primary, .btn-secondary {
