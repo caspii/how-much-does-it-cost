@@ -92,6 +92,7 @@ retryBtn.addEventListener('click', resetToCapture);
 function showPreview() {
     mainContainer.classList.remove('initial-view');
     mainContainer.classList.add('results-view');
+    document.body.classList.add('preview-active');
     heroSection.style.display = 'none';
     takePictureBtn.style.display = 'none';
     preview.style.display = 'block';
@@ -102,6 +103,7 @@ function showPreview() {
 function resetToCapture() {
     mainContainer.classList.add('initial-view');
     mainContainer.classList.remove('results-view');
+    document.body.classList.remove('preview-active');
     heroSection.style.display = 'block';
     takePictureBtn.style.display = 'inline-flex';
     preview.style.display = 'none';
@@ -188,6 +190,7 @@ async function analyzeImage() {
     console.log('Starting image analysis...');
     
     // Show loading with humor
+    document.body.classList.remove('preview-active');
     preview.style.display = 'none';
     loading.style.display = 'block';
     error.style.display = 'none';
