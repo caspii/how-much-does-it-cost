@@ -36,6 +36,29 @@ def test_use_case_not_found(client):
 def test_use_case_valid(client):
     response = client.get('/use-cases/garage-sales')
     assert response.status_code == 200
+    assert b'How to Price Garage Sale Items' in response.data
+
+
+def test_homepage_seo_title(client):
+    response = client.get('/')
+    assert b'How Much Is It Worth?' in response.data
+    assert b'application/ld+json' in response.data
+
+
+def test_robots_txt(client):
+    response = client.get('/robots.txt')
+    assert response.status_code == 200
+    assert response.mimetype == 'text/plain'
+    assert b'Sitemap: https://costcam.app/sitemap.xml' in response.data
+
+
+def test_sitemap_xml(client):
+    response = client.get('/sitemap.xml')
+    assert response.status_code == 200
+    assert response.mimetype == 'application/xml'
+    assert b'<loc>https://costcam.app/</loc>' in response.data
+    assert b'<loc>https://costcam.app/use-cases/garage-sales</loc>' in response.data
+    assert b'<loc>https://costcam.app/use-cases/collectors-antiques</loc>' in response.data
 
 
 def test_parse_openai_json_plain():

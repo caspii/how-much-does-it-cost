@@ -6,7 +6,7 @@ from pathlib import Path
 import markdown
 import requests
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, Response, url_for
 from openai import OpenAI
 
 load_dotenv()
@@ -46,28 +46,28 @@ CURRENCY_BY_COUNTRY = {
 USE_CASES = {
     'garage-sales': {
         'file': 'garage-sales.md',
-        'title': 'Smart Shopping at Garage Sales & Thrift Stores',
-        'description': 'Never overpay at a garage sale again. CostCam helps you make informed decisions when hunting for treasures.'
+        'title': 'How to Price Garage Sale Items: Free Photo Valuation Tool',
+        'description': 'Pricing items for a garage sale or shopping at one? Snap a photo and CostCam gives you an instant value estimate so you never overpay or underprice.'
     },
     'insurance-claims': {
         'file': 'insurance-claims.md',
-        'title': 'Document Your Valuables for Insurance',
-        'description': 'Protect your assets with accurate valuations. CostCam makes it easy to document your belongings.'
+        'title': 'Home Inventory App for Insurance: Document Belongings From Photos',
+        'description': 'Free home inventory app for insurance. Photograph your valuables and CostCam captures item details and estimated value for claims and policy documentation.'
     },
     'moving-selling': {
         'file': 'moving-selling.md',
-        'title': 'Simplify Moving & Decluttering',
-        'description': 'Moving or downsizing? CostCam helps you decide what to keep, sell, or donate.'
+        'title': 'How Much Is My Stuff Worth? Value Items Before Moving or Selling',
+        'description': 'Wondering how much your stuff is worth before you move or sell? Snap a photo and CostCam gives you instant resale and donation value estimates.'
     },
     'gift-shopping': {
         'file': 'gift-shopping.md',
-        'title': 'Smart Gift Shopping & Budget Management',
-        'description': 'Never exceed your gift budget again. CostCam helps you find perfect presents within your price range.'
+        'title': 'Photo Price Checker for Gift Shopping & Budgets · CostCam',
+        'description': 'Stay on budget while gift shopping. Snap a photo of any item to instantly check its price range and find the best deal.'
     },
     'collectors-antiques': {
         'file': 'collectors-antiques.md',
-        'title': 'Discover Hidden Treasures: Collectibles & Antiques',
-        'description': 'Uncover the true value of vintage finds, antiques, and collectibles.'
+        'title': 'Antique Appraisal App: Identify and Value Antiques From a Photo',
+        'description': 'Free antique appraisal app. Snap a photo to instantly identify and estimate the value of antiques, vintage items and collectibles.'
     },
 }
 
@@ -247,6 +247,28 @@ def analyze_image():
 @app.route('/health')
 def health():
     return jsonify({'status': 'healthy'}), 200
+
+
+@app.route('/robots.txt')
+def robots_txt():
+    body = (
+        "User-agent: *\n"
+        "Allow: /\n"
+        "Sitemap: https://costcam.app/sitemap.xml\n"
+    )
+    return Response(body, mimetype='text/plain')
+
+
+@app.route('/sitemap.xml')
+def sitemap_xml():
+    base = 'https://costcam.app'
+    urls = [f'{base}/'] + [f'{base}/use-cases/{slug}' for slug in USE_CASES]
+    body = '<?xml version="1.0" encoding="UTF-8"?>\n'
+    body += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    for url in urls:
+        body += f'  <url><loc>{url}</loc></url>\n'
+    body += '</urlset>\n'
+    return Response(body, mimetype='application/xml')
 
 
 @app.route('/use-cases/<slug>')
