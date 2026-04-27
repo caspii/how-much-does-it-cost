@@ -57,11 +57,11 @@ function compressImage(file, callback) {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             
-            // Calculate new dimensions (max 1200px)
+            // Preserve resolution for OpenAI vision (high-detail tiles up to 2048×768).
             let width = img.width;
             let height = img.height;
-            const maxSize = 1200;
-            
+            const maxSize = 1568;
+
             if (width > height && width > maxSize) {
                 height = (height * maxSize) / width;
                 width = maxSize;
@@ -69,14 +69,13 @@ function compressImage(file, callback) {
                 width = (width * maxSize) / height;
                 height = maxSize;
             }
-            
+
             canvas.width = width;
             canvas.height = height;
-            
+
             ctx.drawImage(img, 0, 0, width, height);
-            
-            // Convert to base64 with compression
-            const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+
+            const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.9);
             callback(compressedDataUrl);
         };
         img.src = e.target.result;

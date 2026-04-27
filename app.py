@@ -174,20 +174,25 @@ def analyze_image():
 
         Please provide:
         1. What the item is, including brand and model if identifiable
-        2. Estimated price range in {local_currency} based on local market prices
-        3. Factors affecting the price
-        4. Where this item might typically be purchased
-        5. Additional helpful information about the item
+        2. Assessed condition based on visible wear, packaging and completeness
+        3. Estimated price range in {local_currency} based on prices typical for 2026
+        4. Factors affecting the price
+        5. Where this item might typically be purchased
+        6. Additional helpful information about the item
 
-        Be cautious and only include information you're confident about. If unsure about specific details, indicate uncertainty.
+        Important rules:
+        - If you cannot clearly read a brand or model from the image, set those fields to null. Do not infer brand from style alone.
+        - The price range should be for the assessed condition, not for new/mint unless the item clearly is new.
+        - If the item is generic and has no meaningful brand (e.g. an unbranded mug), set brand and model to null and price the category.
 
         Format your response as JSON with the following structure:
         {{
             "item_name": "Item name",
-            "brand": "Brand name if identifiable, or null if uncertain",
-            "model": "Model name/number if identifiable, or null if uncertain",
+            "brand": "Brand name if clearly identifiable, otherwise null",
+            "model": "Model name/number if clearly identifiable, otherwise null",
             "category": "General category (e.g., Electronics, Fashion, Home & Garden)",
             "description": "Brief description of the item and its key features",
+            "condition": "new | like_new | good | fair | poor",
             "price_range": {{
                 "low": 0.00,
                 "high": 0.00,
@@ -198,16 +203,16 @@ def analyze_image():
             "factors": ["factor1", "factor2", "factor3"],
             "where_to_buy": ["location1", "location2", "location3"],
             "online_retailers": ["retailer1", "retailer2"],
-            "condition_notes": "Notes about condition if used/vintage, or null",
+            "condition_notes": "Notes about condition cues visible in the photo, or null",
             "alternatives": ["similar item 1", "similar item 2"],
             "buying_tips": ["tip1", "tip2"],
-            "confidence": "high/medium/low",
+            "confidence": "high | medium | low",
             "search_keywords": ["keyword1", "keyword2", "keyword3"]
         }}"""
 
         try:
             response = openai_client.chat.completions.create(
-                model="gpt-4o-mini",
+                model="gpt-4o",
                 messages=[
                     {
                         "role": "user",
@@ -216,13 +221,16 @@ def analyze_image():
                             {
                                 "type": "image_url",
                                 "image_url": {
-                                    "url": f"data:image/jpeg;base64,{image_data}"
+                                    "url": f"data:image/jpeg;base64,{image_data}",
+                                    "detail": "high",
                                 }
                             }
                         ]
                     }
                 ],
-                max_tokens=500,
+                max_tokens=1000,
+                temperature=0.2,
+                response_format={"type": "json_object"},
                 timeout=OPENAI_TIMEOUT,
             )
         except Exception as api_error:
