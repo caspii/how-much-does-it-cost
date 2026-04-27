@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}What Is This Worth? Free Photo Value Calculator · CostCam{% endblock %}
+{% block og_title %}What Is This Worth? Free Photo Value Calculator · CostCam{% endblock %}
+{% block twitter_title %}What Is This Worth? Free Photo Value Calculator · CostCam{% endblock %}
+{% block meta_description %}What is this worth? Snap a photo and get an instant value estimate. Free photo-based value calculator for antiques, electronics, collectibles, jewelry, coins and more.{% endblock %}
+{% block og_description %}What is this worth? Snap a photo and get an instant value estimate. Free photo-based value calculator for antiques, electronics, collectibles, jewelry, coins and more.{% endblock %}
+{% block twitter_description %}What is this worth? Snap a photo and get an instant value estimate. Free photo-based value calculator for antiques, electronics, collectibles, jewelry, coins and more.{% endblock %}
+
+{% block extra_css %}
+<style>
+  .wiitw { max-width: 760px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+  .wiitw h1 { font-size: 2.4rem; line-height: 1.15; margin: 0 0 .75rem; }
+  .wiitw .lede { font-size: 1.1rem; opacity: .85; margin: 0 0 2rem; }
+  .wiitw .cta-row { display: flex; gap: .75rem; flex-wrap: wrap; margin: 1.5rem 0 2.5rem; }
+  .wiitw .cta-row .btn-primary { display: inline-flex; align-items: center; gap: .5rem; }
+  .wiitw h2 { font-size: 1.5rem; margin: 2.5rem 0 1rem; }
+  .wiitw ul.items { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: .5rem; }
+  .wiitw ul.items li a { display: block; padding: .75rem .9rem; border-radius: .5rem; background: rgba(0,0,0,.04); text-decoration: none; color: inherit; }
+  .wiitw ul.items li a:hover { background: rgba(0,0,0,.08); }
+  .wiitw .faq details { padding: .9rem 1rem; border-radius: .5rem; background: rgba(0,0,0,.04); margin-bottom: .5rem; }
+  .wiitw .faq summary { font-weight: 600; cursor: pointer; }
+  .wiitw .faq p { margin: .6rem 0 0; }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="wiitw">
+  <h1>What Is This Worth? A Free Photo Value Calculator</h1>
+  <p class="lede">Hold something in your hand and wonder what it's worth? Take a photo and CostCam returns an estimated value range in seconds — no signup, no app store.</p>
+
+  <div class="cta-row">
+    <a href="/" class="btn-primary">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      Snap a photo to value an item
+    </a>
+  </div>
+
+  <h2>How the value calculator works</h2>
+  <p>CostCam uses AI vision to identify the item in your photo — brand, model, condition cues, distinguishing features — then returns a low / typical / high price range based on current market signals. Prices are localised to your currency when you share location.</p>
+
+  <h2>Common things people ask "what is this worth?" about</h2>
+  <p>Below are categories where a photo-based estimate is especially useful. Each links to a guide on how CostCam helps with that situation.</p>
+  <ul class="items">
+    <li><a href="/use-cases/collectors-antiques">Antiques &amp; vintage finds</a></li>
+    <li><a href="/use-cases/collectors-antiques">Coins &amp; currency</a></li>
+    <li><a href="/use-cases/collectors-antiques">Jewelry &amp; watches</a></li>
+    <li><a href="/use-cases/garage-sales">Garage sale &amp; thrift finds</a></li>
+    <li><a href="/use-cases/moving-selling">Furniture before resale</a></li>
+    <li><a href="/use-cases/moving-selling">Used electronics &amp; phones</a></li>
+    <li><a href="/use-cases/insurance-claims">Household items for insurance</a></li>
+    <li><a href="/use-cases/collectors-antiques">Trading cards &amp; collectibles</a></li>
+    <li><a href="/use-cases/collectors-antiques">Pottery, glass &amp; ceramics</a></li>
+    <li><a href="/use-cases/moving-selling">Tools &amp; appliances</a></li>
+    <li><a href="/use-cases/collectors-antiques">Art prints &amp; paintings</a></li>
+    <li><a href="/use-cases/garage-sales">Books, vinyl &amp; media</a></li>
+  </ul>
+
+  <h2>When a photo estimate is enough — and when it isn't</h2>
+  <p>A photo-based value estimate is great for triage: shopping decisions, insurance documentation, deciding what to keep when moving, or pricing a yard sale. For high-value transactions (rare coins, fine art, professional resale), get the photo estimate first to know what ballpark you're in, then confirm with a specialist appraiser.</p>
+
+  <h2>FAQ</h2>
+  <div class="faq">
+    <details>
+      <summary>Is the value calculator free?</summary>
+      <p>Yes. No account, no app install — just open CostCam and take a photo.</p>
+    </details>
+    <details>
+      <summary>How accurate are the estimates?</summary>
+      <p>You get a low / typical / high range with a confidence level. It's accurate enough for shopping, insurance documentation, and resale pricing. It's not a formal appraisal.</p>
+    </details>
+    <details>
+      <summary>What kinds of items work best?</summary>
+      <p>Items with a clear brand, model, or distinguishing features get the tightest estimates. Generic or heavily worn items get a wider range.</p>
+    </details>
+    <details>
+      <summary>Does it work for antiques?</summary>
+      <p>Yes — see the <a href="/use-cases/collectors-antiques">antique appraisal guide</a> for tips on getting the best photo for antiques and collectibles.</p>
+    </details>
+  </div>
+
+  <div class="cta-row" style="margin-top:2rem">
+    <a href="/" class="btn-primary">Try the value calculator now →</a>
+  </div>
+</main>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"Is the value calculator free?","acceptedAnswer":{"@type":"Answer","text":"Yes. No account, no app install — just open CostCam and take a photo."}},
+    {"@type":"Question","name":"How accurate are the estimates?","acceptedAnswer":{"@type":"Answer","text":"You get a low / typical / high range with a confidence level. It's accurate enough for shopping, insurance documentation, and resale pricing. It's not a formal appraisal."}},
+    {"@type":"Question","name":"What kinds of items work best?","acceptedAnswer":{"@type":"Answer","text":"Items with a clear brand, model, or distinguishing features get the tightest estimates. Generic or heavily worn items get a wider range."}},
+    {"@type":"Question","name":"Does it work for antiques?","acceptedAnswer":{"@type":"Answer","text":"Yes. See the antique appraisal guide for tips on getting the best photo for antiques and collectibles."}}
+  ]
+}
+</script>
+{% endblock %}

@@ -234,6 +234,15 @@ def analyze_image():
 
         parsed = parse_openai_json(result)
         if parsed is not None:
+            app.logger.info("analysis " + json.dumps({
+                "item_name": parsed.get("item_name"),
+                "brand": parsed.get("brand"),
+                "model": parsed.get("model"),
+                "category": parsed.get("category"),
+                "confidence": parsed.get("confidence"),
+                "currency": local_currency,
+                "country": (country_context or "").replace("Location: ", "").rstrip(". ") or None,
+            }, ensure_ascii=False))
             return jsonify({'success': True, 'data': parsed})
 
         app.logger.warning("Response is not valid JSON")
@@ -249,6 +258,11 @@ def health():
     return jsonify({'status': 'healthy'}), 200
 
 
+@app.route('/what-is-it-worth')
+def what_is_it_worth():
+    return render_template('what_is_it_worth.html', is_local=is_local_request())
+
+
 @app.route('/robots.txt')
 def robots_txt():
     body = (
@@ -262,7 +276,7 @@ def robots_txt():
 @app.route('/sitemap.xml')
 def sitemap_xml():
     base = 'https://costcam.app'
-    urls = [f'{base}/'] + [f'{base}/use-cases/{slug}' for slug in USE_CASES]
+    urls = [f'{base}/', f'{base}/what-is-it-worth'] + [f'{base}/use-cases/{slug}' for slug in USE_CASES]
     body = '<?xml version="1.0" encoding="UTF-8"?>\n'
     body += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     for url in urls:

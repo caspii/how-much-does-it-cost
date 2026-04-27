@@ -45,6 +45,13 @@ def test_homepage_seo_title(client):
     assert b'application/ld+json' in response.data
 
 
+def test_what_is_it_worth_page(client):
+    response = client.get('/what-is-it-worth')
+    assert response.status_code == 200
+    assert b'What Is This Worth?' in response.data
+    assert b'application/ld+json' in response.data
+
+
 def test_robots_txt(client):
     response = client.get('/robots.txt')
     assert response.status_code == 200
@@ -59,6 +66,7 @@ def test_sitemap_xml(client):
     assert b'<loc>https://costcam.app/</loc>' in response.data
     assert b'<loc>https://costcam.app/use-cases/garage-sales</loc>' in response.data
     assert b'<loc>https://costcam.app/use-cases/collectors-antiques</loc>' in response.data
+    assert b'<loc>https://costcam.app/what-is-it-worth</loc>' in response.data
 
 
 def test_parse_openai_json_plain():
