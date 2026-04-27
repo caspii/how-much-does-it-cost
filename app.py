@@ -69,6 +69,11 @@ USE_CASES = {
         'title': 'Antique Appraisal App: Identify and Value Antiques From a Photo',
         'description': 'Free antique appraisal app. Snap a photo to instantly identify and estimate the value of antiques, vintage items and collectibles.'
     },
+    'online-reselling': {
+        'file': 'online-reselling.md',
+        'title': 'Price Research for eBay & Marketplace Resellers · CostCam',
+        'description': 'Pricing research for online resellers. Snap a photo and CostCam returns market value, suggested keywords and comp links for eBay, Poshmark and Facebook Marketplace.'
+    },
 }
 
 
