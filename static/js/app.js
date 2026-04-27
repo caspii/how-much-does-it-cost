@@ -253,185 +253,108 @@ async function analyzeImage() {
     }
 }
 
+const AMAZON_TAG = 'keepthescor0a-20';
+const EBAY_CAMPAIGN_ID = '';
+
+const LOCALE_BY_CURRENCY = {
+    USD: 'en-US', EUR: 'de-DE', GBP: 'en-GB', JPY: 'ja-JP', CNY: 'zh-CN',
+    INR: 'en-IN', CAD: 'en-CA', AUD: 'en-AU', BRL: 'pt-BR', MXN: 'es-MX',
+    KRW: 'ko-KR', CHF: 'de-CH', SEK: 'sv-SE', NOK: 'nb-NO', DKK: 'da-DK',
+};
+
+const EBAY_FIRST_CATEGORIES = [
+    'antique', 'collectible', 'vintage', 'jewelry', 'jewellery',
+    'coin', 'stamp', 'card', 'memorabilia', 'art',
+];
+
+function buildSearchQuery(data) {
+    const parts = [data.brand, data.model, data.item_name].filter(Boolean);
+    if (parts.length > 0) return parts.join(' ');
+    if (Array.isArray(data.search_keywords) && data.search_keywords.length > 0) {
+        return data.search_keywords.join(' ');
+    }
+    return data.item_name || '';
+}
+
+function pickPrimaryMarketplace(data) {
+    const cond = (data.condition || '').toLowerCase();
+    if (cond === 'good' || cond === 'fair' || cond === 'poor') return 'ebay';
+    const cat = (data.category || '').toLowerCase();
+    if (EBAY_FIRST_CATEGORIES.some(k => cat.includes(k))) return 'ebay';
+    return 'amazon';
+}
+
+function amazonURL(query) {
+    return `https://www.amazon.com/s?k=${encodeURIComponent(query)}&tag=${AMAZON_TAG}`;
+}
+
+function ebayURL(query) {
+    const base = `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(query)}`;
+    return EBAY_CAMPAIGN_ID
+        ? `${base}&mkcid=1&mkrid=711-53200-19255-0&campid=${EBAY_CAMPAIGN_ID}`
+        : base;
+}
+
+function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+    }[c]));
+}
+
 function displayResults(data) {
     results.style.display = 'block';
     if (cameraSection) cameraSection.style.display = 'none';
-    
+
     if (data.raw_response) {
-        // Handle raw text response
-        resultContent.innerHTML = `
-            <div class="price-info">
-                <p>${data.raw_response}</p>
-            </div>
-        `;
-    } else {
-        // Handle structured JSON response
-        let html = `
-            <div class="price-info">
-                <div class="item-name">${data.item_name || 'Unknown Item'}</div>
-        `;
-        
-        // Add brand and model if available
-        if (data.brand || data.model) {
-            html += '<div class="item-details">';
-            if (data.brand) html += `<span class="brand">Brand: ${data.brand}</span>`;
-            if (data.brand && data.model) html += ' • ';
-            if (data.model) html += `<span class="model">Model: ${data.model}</span>`;
-            html += '</div>';
-        }
-        
-        if (data.price_range) {
-            // Determine locale based on currency
-            const localeMap = {
-                'USD': 'en-US',
-                'EUR': 'de-DE',
-                'GBP': 'en-GB',
-                'JPY': 'ja-JP',
-                'CNY': 'zh-CN',
-                'INR': 'en-IN',
-                'CAD': 'en-CA',
-                'AUD': 'en-AU',
-                'BRL': 'pt-BR',
-                'MXN': 'es-MX',
-                'KRW': 'ko-KR',
-                'CHF': 'de-CH',
-                'SEK': 'sv-SE',
-                'NOK': 'nb-NO',
-                'DKK': 'da-DK'
-            };
-            
-            const locale = localeMap[data.currency] || 'en-US';
-            const formatPrice = (price) => {
-                return new Intl.NumberFormat(locale, {
-                    style: 'currency',
-                    currency: data.currency || 'USD',
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0
-                }).format(price);
-            };
-            
-            html += `
-                <div class="price-range">
-                    ${formatPrice(data.price_range.low)} - ${formatPrice(data.price_range.high)}
-                </div>
-                <div class="typical-price">Typical price: <strong>${formatPrice(data.price_range.typical)}</strong></div>
-            `;
-        }
-        
-        if (data.location) {
-            html += `<div class="location-info">Prices for: ${data.location}</div>`;
-        }
-        
-        if (data.confidence) {
-            html += `<div class="confidence confidence-${data.confidence}">Confidence: ${data.confidence.toUpperCase()}</div>`;
-        }
-        
-        html += `</div>`;
-        
-        // Add description if available
-        if (data.description) {
-            html += `<div class="item-description">${data.description}</div>`;
-        }
-        
-        // Add category if available
-        if (data.category) {
-            html += `<div class="item-category">Category: ${data.category}</div>`;
-        }
-        
-        if (data.factors && data.factors.length > 0) {
-            html += `
-                <div class="factors">
-                    <h3>Price Factors</h3>
-                    <ul>
-                        ${data.factors.map(factor => `<li>${factor}</li>`).join('')}
-                    </ul>
-                </div>
-            `;
-        }
-        
-        if (data.where_to_buy && data.where_to_buy.length > 0) {
-            html += `
-                <div class="where-to-buy">
-                    <h3>Where to Buy Locally</h3>
-                    <ul>
-                        ${data.where_to_buy.map(place => `<li>${place}</li>`).join('')}
-                    </ul>
-                </div>
-            `;
-        }
-        
-        // Add online retailers
-        if (data.online_retailers && data.online_retailers.length > 0) {
-            html += `
-                <div class="online-retailers">
-                    <h3>Online Options</h3>
-                    <ul>
-                        ${data.online_retailers.map(retailer => `<li>${retailer}</li>`).join('')}
-                    </ul>
-                </div>
-            `;
-        }
-        
-        // Add condition notes if available
-        if (data.condition_notes) {
-            html += `
-                <div class="condition-notes">
-                    <h3>Condition Notes</h3>
-                    <p>${data.condition_notes}</p>
-                </div>
-            `;
-        }
-        
-        // Add alternatives
-        if (data.alternatives && data.alternatives.length > 0) {
-            html += `
-                <div class="alternatives">
-                    <h3>Similar Alternatives</h3>
-                    <ul>
-                        ${data.alternatives.map(alt => `<li>${alt}</li>`).join('')}
-                    </ul>
-                </div>
-            `;
-        }
-        
-        // Add buying tips
-        if (data.buying_tips && data.buying_tips.length > 0) {
-            html += `
-                <div class="buying-tips">
-                    <h3>Buying Tips</h3>
-                    <ul>
-                        ${data.buying_tips.map(tip => `<li>${tip}</li>`).join('')}
-                    </ul>
-                </div>
-            `;
-        }
-        
-        // Add search links
-        if (data.search_keywords && data.search_keywords.length > 0) {
-            const searchQuery = data.search_keywords.join(' ');
-            html += `
-                <div class="search-links">
-                    <h3>Search Online</h3>
-                    <div class="link-buttons">
-                        <a href="https://www.google.com/search?q=${encodeURIComponent(searchQuery)}" target="_blank" class="search-link">
-                            Google Search
-                        </a>
-                        <a href="https://www.google.com/search?q=${encodeURIComponent(searchQuery)}&tbm=shop" target="_blank" class="search-link">
-                            Google Shopping
-                        </a>
-                        <a href="https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(searchQuery)}" target="_blank" class="search-link">
-                            eBay
-                        </a>
-                        <a href="https://www.amazon.com/s?k=${encodeURIComponent(searchQuery)}" target="_blank" class="search-link">
-                            Amazon
-                        </a>
-                    </div>
-                </div>
-            `;
-        }
-        
-        resultContent.innerHTML = html;
+        resultContent.innerHTML = `<div class="price-info"><p>${escapeHtml(data.raw_response)}</p></div>`;
+        return;
     }
+
+    const currency = data.currency || 'USD';
+    const locale = LOCALE_BY_CURRENCY[currency] || 'en-US';
+    const formatPrice = (price) => new Intl.NumberFormat(locale, {
+        style: 'currency', currency, minimumFractionDigits: 0, maximumFractionDigits: 0,
+    }).format(price);
+
+    const itemName = escapeHtml(data.item_name || 'Unknown Item');
+    const brandModel = [data.brand, data.model].filter(Boolean).map(escapeHtml).join(' · ');
+
+    let priceBlock = '';
+    if (data.price_range) {
+        priceBlock = `
+            <div class="price-range">${formatPrice(data.price_range.low)} – ${formatPrice(data.price_range.high)}</div>
+            <div class="typical-price">Typical: <strong>${formatPrice(data.price_range.typical)}</strong></div>
+        `;
+    }
+
+    const chips = [];
+    if (data.condition) chips.push(`<span class="result-chip">${escapeHtml(data.condition.replace('_', ' '))}</span>`);
+    if (data.confidence) chips.push(`<span class="result-chip confidence-${escapeHtml(data.confidence)}">${escapeHtml(data.confidence)} confidence</span>`);
+
+    const query = buildSearchQuery(data);
+    const primary = pickPrimaryMarketplace(data);
+    const aURL = amazonURL(query);
+    const eURL = ebayURL(query);
+
+    const amazonBtn = `<a href="${aURL}" target="_blank" rel="noopener noreferrer sponsored" class="btn-primary marketplace-cta" onclick="window.fathom && window.fathom.trackEvent('amazon_click')">Check current price on Amazon →</a>`;
+    const ebayBtn = `<a href="${eURL}" target="_blank" rel="noopener noreferrer sponsored" class="btn-primary marketplace-cta" onclick="window.fathom && window.fathom.trackEvent('ebay_click')">See similar on eBay →</a>`;
+    const amazonBtnSm = `<a href="${aURL}" target="_blank" rel="noopener noreferrer sponsored" class="btn-secondary marketplace-cta-sm" onclick="window.fathom && window.fathom.trackEvent('amazon_click')">Check on Amazon</a>`;
+    const ebayBtnSm = `<a href="${eURL}" target="_blank" rel="noopener noreferrer sponsored" class="btn-secondary marketplace-cta-sm" onclick="window.fathom && window.fathom.trackEvent('ebay_click')">Compare on eBay</a>`;
+
+    const ctaBlock = primary === 'ebay'
+        ? `${ebayBtn}${amazonBtnSm}`
+        : `${amazonBtn}${ebayBtnSm}`;
+
+    resultContent.innerHTML = `
+        <div class="price-info">
+            <div class="item-name">${itemName}</div>
+            ${brandModel ? `<div class="item-details">${brandModel}</div>` : ''}
+            ${priceBlock}
+            ${chips.length ? `<div class="result-chips">${chips.join('')}</div>` : ''}
+        </div>
+        <div class="marketplace-ctas">${ctaBlock}</div>
+        <p class="affiliate-disclosure">We earn a small commission on purchases through these links. It doesn't affect the estimate above.</p>
+    `;
 }
 
 function showError(message) {
