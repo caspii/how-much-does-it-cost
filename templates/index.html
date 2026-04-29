@@ -9,6 +9,13 @@
 
     <link rel="canonical" href="https://costcam.app/">
 
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='images/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='images/favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('static', filename='images/favicon-192x192.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='images/apple-touch-icon.png') }}">
+    <meta name="theme-color" content="#f97316">
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://costcam.app/">
@@ -85,7 +92,7 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     {% if not is_local %}
     <!-- Fathom - beautiful, simple website analytics -->
@@ -200,7 +207,7 @@
 
                 <a href="/use-cases/collectors-antiques" class="use-case-card">
                     <span class="use-case-icon">🏺</span>
-                    <h3>Antique Appraisal App</h3>
+                    <h3>Free Antique Identification App</h3>
                     <p>Identify and value antiques and collectibles from a photo</p>
                     <span class="use-case-arrow">→</span>
                 </a>
