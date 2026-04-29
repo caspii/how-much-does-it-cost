@@ -1,3 +1,5 @@
+import functools
+import ipaddress
 import json
 import logging
 import os
@@ -23,7 +25,7 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key')
 OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
 openai_client = OpenAI(api_key=OPENAI_API_KEY) if OPENAI_API_KEY else None
 
-GEOCODE_TIMEOUT = 5      # seconds
+IPGEO_TIMEOUT = 3        # seconds
 OPENAI_TIMEOUT = 30      # seconds
 
 CURRENCY_BY_COUNTRY = {
@@ -90,27 +92,52 @@ def is_local_request():
     )
 
 
-def resolve_location(latitude, longitude):
-    """Reverse-geocode coordinates to (country_context, currency, location_context).
+def get_client_ip(req):
+    """Return the originating client IP from X-Forwarded-For, or remote_addr."""
+    forwarded = req.headers.get('X-Forwarded-For', '')
+    for part in forwarded.split(','):
+        candidate = part.strip()
+        if candidate:
+            return candidate
+    return req.remote_addr or ''
 
-    Returns a 3-tuple even on failure so callers don't need to branch.
+
+def _is_public_ip(ip):
+    try:
+        addr = ipaddress.ip_address(ip)
+    except ValueError:
+        return False
+    return not (addr.is_private or addr.is_loopback or addr.is_link_local or addr.is_reserved or addr.is_unspecified)
+
+
+@functools.lru_cache(maxsize=1024)
+def resolve_location_from_ip(ip):
+    """Look up country from IP and return (country_context, currency, location_context).
+
+    Returns a USD-default 3-tuple on private IPs, timeouts, or any API error.
     """
+    if not ip or not _is_public_ip(ip):
+        return "", "USD", ""
+
     try:
         geo_response = requests.get(
-            f"https://geocode.maps.co/reverse?lat={latitude}&lon={longitude}",
-            headers={"User-Agent": "HowMuchDoesItCost/1.0"},
-            timeout=GEOCODE_TIMEOUT,
+            f"https://ipapi.co/{ip}/json/",
+            headers={"User-Agent": "CostCam/1.0"},
+            timeout=IPGEO_TIMEOUT,
         )
     except requests.RequestException as e:
-        app.logger.warning(f"Geocoding failed: {e}")
-        return "", "USD", f"The photo was taken at coordinates: {latitude}, {longitude}. Consider regional pricing variations based on this location."
+        app.logger.warning(f"IP geolocation failed: {e}")
+        return "", "USD", ""
 
     if geo_response.status_code != 200:
         return "", "USD", ""
 
-    address = geo_response.json().get('address', {})
-    country = address.get('country', '')
-    city = address.get('city', '')
+    payload = geo_response.json()
+    if payload.get('error'):
+        return "", "USD", ""
+
+    country = payload.get('country_name', '') or ''
+    city = payload.get('city', '') or ''
     currency = CURRENCY_BY_COUNTRY.get(country, 'USD')
 
     if city and country:
@@ -123,7 +150,8 @@ def resolve_location(latitude, longitude):
     location_context = (
         f"The user is located in {country_context}"
         f"Please provide prices in {currency} considering local market conditions and pricing."
-    )
+    ) if country_context else ""
+
     return country_context, currency, location_context
 
 
@@ -161,8 +189,6 @@ def analyze_image():
             return jsonify({'error': 'No data received'}), 400
 
         image_data = data.get('image')
-        latitude = data.get('latitude')
-        longitude = data.get('longitude')
 
         app.logger.info(f"Image data length: {len(image_data) if image_data else 0}")
 
@@ -173,10 +199,7 @@ def analyze_image():
         if ',' in image_data:
             image_data = image_data.split(',', 1)[1]
 
-        if latitude and longitude:
-            country_context, local_currency, location_context = resolve_location(latitude, longitude)
-        else:
-            country_context, local_currency, location_context = "", "USD", ""
+        country_context, local_currency, location_context = resolve_location_from_ip(get_client_ip(request))
 
         prompt = f"""Analyze this image and provide an estimated price range for the item(s) shown.
         {location_context}

@@ -1,5 +1,4 @@
 let currentImageData = null;
-let userLocation = null;
 
 // DOM elements
 const takePictureBtn = document.getElementById('takePictureBtn');
@@ -18,19 +17,6 @@ const retryBtn = document.getElementById('retryBtn');
 const mainContainer = document.getElementById('mainContainer');
 const heroSection = document.getElementById('heroSection');
 const cameraSection = document.querySelector('.camera-section');
-
-// Get user's location
-navigator.geolocation.getCurrentPosition(
-    (position) => {
-        userLocation = {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude
-        };
-    },
-    (err) => {
-        console.log('Location permission denied or unavailable');
-    }
-);
 
 // Event listeners
 takePictureBtn.addEventListener('click', () => {
@@ -200,12 +186,7 @@ async function analyzeImage() {
         const requestData = {
             image: currentImageData
         };
-        
-        if (userLocation) {
-            requestData.latitude = userLocation.latitude;
-            requestData.longitude = userLocation.longitude;
-        }
-        
+
         console.log('Request data size:', JSON.stringify(requestData).length);
         console.log('Sending request to /analyze...');
         
