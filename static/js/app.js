@@ -10,6 +10,8 @@ const retakeBtn = document.getElementById('retakeBtn');
 const loading = document.getElementById('loading');
 const results = document.getElementById('results');
 const resultContent = document.getElementById('resultContent');
+const resultImage = document.getElementById('resultImage');
+const backToHistoryBtn = document.getElementById('backToHistoryBtn');
 const newPictureBtn = document.getElementById('newPictureBtn');
 const error = document.getElementById('error');
 const errorMessage = document.querySelector('.error-message');
@@ -17,6 +19,13 @@ const retryBtn = document.getElementById('retryBtn');
 const mainContainer = document.getElementById('mainContainer');
 const heroSection = document.getElementById('heroSection');
 const cameraSection = document.querySelector('.camera-section');
+const historyBtn = document.getElementById('historyBtn');
+const historyCount = document.getElementById('historyCount');
+const historySection = document.getElementById('historySection');
+const historyGrid = document.getElementById('historyGrid');
+const historyEmpty = document.getElementById('historyEmpty');
+const historyBackBtn = document.getElementById('historyBackBtn');
+const historyClearBtn = document.getElementById('historyClearBtn');
 
 // Event listeners
 takePictureBtn.addEventListener('click', () => {
@@ -73,6 +82,16 @@ analyzeBtn.addEventListener('click', analyzeImage);
 retakeBtn.addEventListener('click', resetToCapture);
 newPictureBtn.addEventListener('click', resetToCapture);
 retryBtn.addEventListener('click', resetToCapture);
+historyBtn.addEventListener('click', showHistory);
+historyBackBtn.addEventListener('click', resetToCapture);
+historyClearBtn.addEventListener('click', () => {
+    if (confirm('Delete all past estimates? This cannot be undone.')) {
+        CostCamHistory.clearHistory();
+        renderHistoryGrid();
+        updateHistoryButton();
+    }
+});
+backToHistoryBtn.addEventListener('click', showHistory);
 
 // Functions
 function showPreview() {
@@ -95,10 +114,14 @@ function resetToCapture() {
     preview.style.display = 'none';
     results.style.display = 'none';
     error.style.display = 'none';
+    historySection.style.display = 'none';
+    resultImage.style.display = 'none';
+    backToHistoryBtn.style.display = 'none';
     if (cameraSection) cameraSection.style.display = 'block';
     loading.style.display = 'none';
     fileInput.value = '';
     currentImageData = null;
+    updateHistoryButton();
 }
 
 // Dry and humorous loading messages
@@ -224,6 +247,7 @@ async function analyzeImage() {
                     confidence: result.data.confidence || 'unknown'
                 });
             }
+            saveToHistory(currentImageData, result.data);
             displayResults(result.data);
         } else {
             showError(result.error || 'Failed to analyze image');
@@ -344,7 +368,7 @@ function displayResults(data) {
 function showError(message) {
     error.style.display = 'block';
     errorMessage.textContent = message;
-    
+
     // Track error event
     if (window.fathom) {
         window.fathom.trackEvent('analysis_error', {
@@ -352,3 +376,140 @@ function showError(message) {
         });
     }
 }
+
+// ---- History (localStorage) ----
+
+const THUMB_MAX_SIZE = 800;
+const THUMB_QUALITY = 0.75;
+
+function makeThumbnail(dataUrl, callback) {
+    const img = new Image();
+    img.onload = () => {
+        let width = img.width;
+        let height = img.height;
+        if (width > height && width > THUMB_MAX_SIZE) {
+            height = (height * THUMB_MAX_SIZE) / width;
+            width = THUMB_MAX_SIZE;
+        } else if (height > THUMB_MAX_SIZE) {
+            width = (width * THUMB_MAX_SIZE) / height;
+            height = THUMB_MAX_SIZE;
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+        callback(canvas.toDataURL('image/jpeg', THUMB_QUALITY));
+    };
+    img.onerror = () => callback(dataUrl);
+    img.src = dataUrl;
+}
+
+function saveToHistory(imageData, data) {
+    if (!imageData || !data) return;
+    makeThumbnail(imageData, (thumb) => {
+        const entry = {
+            id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+            timestamp: Date.now(),
+            image: thumb,
+            data: data,
+        };
+        CostCamHistory.addHistoryEntry(entry);
+        updateHistoryButton();
+    });
+}
+
+function deleteHistoryItem(id) {
+    CostCamHistory.deleteHistoryItem(id);
+    updateHistoryButton();
+}
+
+function updateHistoryButton() {
+    const items = CostCamHistory.loadHistory();
+    if (items.length === 0) {
+        historyBtn.style.display = 'none';
+        return;
+    }
+    historyBtn.style.display = 'inline-flex';
+    historyCount.textContent = items.length;
+}
+
+function showHistory() {
+    mainContainer.classList.remove('initial-view');
+    mainContainer.classList.add('results-view');
+    document.body.classList.remove('preview-active');
+    heroSection.style.display = 'none';
+    takePictureBtn.style.display = 'none';
+    historyBtn.style.display = 'none';
+    if (cameraSection) cameraSection.style.display = 'none';
+    preview.style.display = 'none';
+    results.style.display = 'none';
+    error.style.display = 'none';
+    loading.style.display = 'none';
+    historySection.style.display = 'block';
+    renderHistoryGrid();
+}
+
+function renderHistoryGrid() {
+    const items = CostCamHistory.loadHistory();
+    if (items.length === 0) {
+        historyGrid.innerHTML = '';
+        historyEmpty.style.display = 'block';
+        historyClearBtn.style.visibility = 'hidden';
+        return;
+    }
+    historyEmpty.style.display = 'none';
+    historyClearBtn.style.visibility = 'visible';
+
+    historyGrid.innerHTML = items.map(item => {
+        const name = escapeHtml(item.data.item_name || 'Unknown item');
+        const price = escapeHtml(CostCamHistory.formatHistoryPrice(item.data, LOCALE_BY_CURRENCY));
+        const date = escapeHtml(CostCamHistory.formatHistoryDate(item.timestamp));
+        return `
+            <div class="history-card" data-id="${escapeHtml(item.id)}">
+                <button class="history-card-delete" data-id="${escapeHtml(item.id)}" aria-label="Delete">×</button>
+                <img class="history-card-image" src="${item.image}" alt="${name}" loading="lazy">
+                <div class="history-card-body">
+                    <div class="history-card-title">${name}</div>
+                    ${price ? `<div class="history-card-price">${price}</div>` : ''}
+                    <div class="history-card-date">${date}</div>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    historyGrid.querySelectorAll('.history-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+            if (e.target.classList.contains('history-card-delete')) return;
+            showHistoryDetail(card.dataset.id);
+        });
+    });
+    historyGrid.querySelectorAll('.history-card-delete').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            deleteHistoryItem(btn.dataset.id);
+            renderHistoryGrid();
+        });
+    });
+}
+
+function showHistoryDetail(id) {
+    const item = CostCamHistory.loadHistory().find(x => x.id === id);
+    if (!item) return;
+
+    historySection.style.display = 'none';
+    heroSection.style.display = 'none';
+    takePictureBtn.style.display = 'none';
+    historyBtn.style.display = 'none';
+    if (cameraSection) cameraSection.style.display = 'none';
+    preview.style.display = 'none';
+    error.style.display = 'none';
+    loading.style.display = 'none';
+
+    resultImage.src = item.image;
+    resultImage.style.display = 'block';
+    backToHistoryBtn.style.display = 'inline-flex';
+
+    displayResults(item.data);
+}
+
+updateHistoryButton();

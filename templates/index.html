@@ -124,6 +124,9 @@
                 </svg>
                 Take Picture
             </button>
+            <button id="historyBtn" class="btn-link history-btn" style="display: none;">
+                View past estimates (<span id="historyCount">0</span>)
+            </button>
         </div>
         
         <div class="camera-section">
@@ -159,11 +162,23 @@
         </div>
         
         <div id="results" class="results-section" style="display: none;">
-            <h2>Price Estimate</h2>
+            <button id="backToHistoryBtn" class="btn-link back-to-history" style="display: none;">← Back to history</button>
+            <h2 id="resultsTitle">Price Estimate</h2>
+            <img id="resultImage" class="result-image" alt="" style="display: none;">
             <div id="resultContent"></div>
             <button id="newPictureBtn" class="btn-primary">Take Another Picture</button>
         </div>
-        
+
+        <div id="historySection" class="history-section" style="display: none;">
+            <div class="history-header">
+                <button id="historyBackBtn" class="btn-link">← Back</button>
+                <h2>Past estimates</h2>
+                <button id="historyClearBtn" class="btn-link">Clear all</button>
+            </div>
+            <div id="historyGrid" class="history-grid"></div>
+            <p id="historyEmpty" class="history-empty" style="display: none;">No past estimates yet. Take a picture to get started.</p>
+        </div>
+
         <div id="error" class="error-section" style="display: none;">
             <p class="error-message"></p>
             <button id="retryBtn" class="btn-secondary">Try Again</button>
@@ -222,6 +237,7 @@
         </div>
     </section>
     
+    <script src="{{ url_for('static', filename='js/history.js') }}"></script>
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 </html>
